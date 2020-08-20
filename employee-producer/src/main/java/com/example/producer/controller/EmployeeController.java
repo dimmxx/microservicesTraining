@@ -2,7 +2,6 @@ package com.example.producer.controller;
 
 import com.example.producer.model.Employee;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,14 +13,15 @@ public class EmployeeController {
     @HystrixCommand(fallbackMethod = "getDataFallBack")
     public Employee firstPage() {
 
+        System.out.println("!=============> Inside firstPage() method");
+
         Employee employee = new Employee();
         employee.setName("emp1");
         employee.setDesignation("manager");
         employee.setEmpId("1");
         employee.setSalary(3000);
 
-
-        if(true){
+        if (true) {
             throw new RuntimeException();
         }
 
@@ -30,6 +30,9 @@ public class EmployeeController {
     }
 
     public Employee getDataFallBack() {
+
+        System.out.println("!=============> Inside fallback method");
+
         Employee employee = new Employee();
         employee.setName("fallback-emp1");
         employee.setDesignation("fallback-manager");
@@ -37,10 +40,6 @@ public class EmployeeController {
         employee.setSalary(0);
         return employee;
     }
-
-
-
-
 
 
 }

@@ -15,12 +15,14 @@ public class EmployeeConsumerApplication {
 		ApplicationContext context = SpringApplication.run(EmployeeConsumerApplication.class, args);
 		ConsumerControllerClient consumerControllerClient = context.getBean(ConsumerControllerClient.class);
 		System.out.println(consumerControllerClient);
-		System.out.println(consumerControllerClient.getEmployee());
 
+		for (int i = 0; i < 100; i++) {
+			System.out.println(consumerControllerClient.getEmployee());
+		}
 	}
 
 	@Bean
-	public ConsumerControllerClient consumerControllerClient(){
+	public ConsumerControllerClient consumerControllerClient() {
 		return new ConsumerControllerClient();
 	}
 
