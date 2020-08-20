@@ -1,55 +1,26 @@
 package com.example.consumer.controller;
 
+import com.example.consumer.model.Employee;
+import com.example.consumer.service.RemoteCallService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
-import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 public class ConsumerControllerClient {
 
     @Autowired
-    private LoadBalancerClient loadBalancerClient;
+    private RemoteCallService remoteCallService;
 
-    public ResponseEntity<String> getEmployee(){
-
-        ServiceInstance serviceInstance = loadBalancerClient.choose("employee-producer");
-        String baseUrl = serviceInstance.getUri().toString();
-        baseUrl = baseUrl + "/employee";
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> responseEntity = null;
-
+    public ResponseEntity<String> getEmployee() {
+        Employee employee = null;
         try {
-            responseEntity = restTemplate.exchange(baseUrl, HttpMethod.GET, getHeaders(), String.class);
-        }catch (Exception e){
+            employee = remoteCallService.getData();
+            System.out.println(employee);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return responseEntity;
+        return new ResponseEntity<>(employee != null ? employee.toString() : "empty", HttpStatus.OK);
     }
-
-    private static HttpEntity<?> getHeaders() throws IOException{
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-        HttpEntity<?> httpEntity = new HttpEntity(headers);
-        return httpEntity;
-    }
-
-
-
-
-
-
-
-
-
-
 
 
 }

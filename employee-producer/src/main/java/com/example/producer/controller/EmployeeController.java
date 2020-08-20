@@ -21,7 +21,7 @@ public class EmployeeController {
         employee.setEmpId("1");
         employee.setSalary(3000);
 
-        if (true) {
+        if (false) {
             throw new RuntimeException();
         }
 
