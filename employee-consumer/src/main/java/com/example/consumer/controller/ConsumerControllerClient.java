@@ -1,15 +1,26 @@
 package com.example.consumer.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ConsumerControllerClient {
 
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
     public ResponseEntity<String> getEmployee(){
 
-        String baseUrl = "http://localhost:8080/employee";
+        List<ServiceInstance> serviceInstanceList = discoveryClient.getInstances("employee-producer");
+        ServiceInstance serviceInstance = serviceInstanceList.get(0);
+        String baseUrl = serviceInstance.getUri().toString();
+        baseUrl = baseUrl + "/employee";
+
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = null;
 

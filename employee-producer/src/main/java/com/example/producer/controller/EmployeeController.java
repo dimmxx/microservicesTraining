@@ -1,6 +1,7 @@
 package com.example.producer.controller;
 
 import com.example.producer.model.Employee;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
